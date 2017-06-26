@@ -1,0 +1,18 @@
+{
+  "name": "isgame-online-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jonathan Hardison <jmh@jonathanhardison.com>",
+  "license": "MIT",
+  "dependencies": {
+    "alexa-app": "^4.0.1",
+    "cheerio": "^1.0.0-rc.1",
+    "q": "^1.5.0",
+    "raven": "^2.1.0",
+    "request": "^2.81.0"
+  }
+}
