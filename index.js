@@ -6,7 +6,7 @@
 
 var config = require('./config');
 var alexa = require("alexa-app");
-//var Raven = require('raven');
+var Raven = require('raven');
 
 
 //controllers
@@ -26,7 +26,7 @@ var alexaApp = new alexa.app("v1alexaapi");
     // }
 
 
-
+Raven.config(configInstance.ravenDSN).install();
 
 alexaApp.launch(function(request, response) {
 
@@ -91,52 +91,59 @@ alexaApp.intent("GameStatus",
 
  function(request, response) {
 
-    var gameAsked = request.slot("AMAZON.VideoGame");
-    var gameIsValid = gamecheckisvalid(gameAsked);
-    if(typeof gameAsked === "undefined"){
-        response.shouldEndSession (false, "What game would you like status for?");
-        return response.send();
-    }
+    try{
+        var gameAsked = request.slot("AMAZON.VideoGame");
+        var gameIsValid = gamecheckisvalid(gameAsked);
+        if(typeof gameAsked === "undefined"){
+            response.shouldEndSession (false, "What game would you like status for?");
+            return response.send();
+        }
 
-    if(gameIsValid != null){
-        
-        return gamestatusengine(gameIsValid).then(function (gamestatus) {
-            if(configInstance.debugEnabled){console.log(gamestatus);}
-            if(gamestatus.status != null){
-                
-                if(gamestatus.status == "Online")
-                {
-                    var responseText = `Yes, ${gameAsked} is currently ${gamestatus.status}`;
-                    response.say(responseText);
-                }
-                else if(gamestatus.status == "Offline")
-                {
-                    var responseText = `No, ${gameAsked} is currently ${gamestatus.status}`;
-                    response.say(responseText);
-                }
-                else{
-                    var responseText = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
-                    response.say(responseText);
-                }
+        if(gameIsValid != null){
             
-                if(configInstance.debugEnabled){console.log(response);}
-                return response.send();
+            return gamestatusengine(gameIsValid).then(function (gamestatus) {
+                if(configInstance.debugEnabled){console.log(gamestatus);}
+                if(gamestatus.status != null){
+                    
+                    if(gamestatus.status == "Online")
+                    {
+                        var responseText = `Yes, ${gameAsked} is currently ${gamestatus.status}`;
+                        response.say(responseText);
+                    }
+                    else if(gamestatus.status == "Offline")
+                    {
+                        var responseText = `No, ${gameAsked} is currently ${gamestatus.status}`;
+                        response.say(responseText);
+                    }
+                    else{
+                        var responseText = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
+                        response.say(responseText);
+                    }
+                
+                    if(configInstance.debugEnabled){console.log(response);}
+                    return response.send();
 
-            }
-            else
-            {
-                response.clear().say(`Sorry there was an error checking the status for ${gameAsked}`);
-                return response.send();
-            }
-        });
-    }
-    else{
-        response.clear().say(`Sorry, ${gameAsked} is not yet supported. The internets will work to make this so.`);
+                }
+                else
+                {
+                    response.clear().say(`Sorry there was an error checking the status for ${gameAsked}`);
+                    return response.send();
+                }
+            });
+        }
+        else{
+            response.clear().say(`Sorry, ${gameAsked} is not yet supported. The internets will work to make this so.`);
+            return response.send();
+        }
+    }//try
+    catch(e){
+        Raven.captureException(e);
+        response.clear();
+        response.shouldEndSession(true, "Sorry, something went wrong, please try your request again.");
         return response.send();
-    }
+
+    }//catch
   }
 );
-
-//Raven.config(configInstance.ravenDSN).install();
 
 exports.handler = alexaApp.lambda();
