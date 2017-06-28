@@ -118,8 +118,7 @@ alexaApp.intent("GameStatus",
         "status of {AMAZON.VideoGame}",
         "{AMAZON.VideoGame} state",
         "is {AMAZON.VideoGame} available",
-        "is {AMAZON.VideoGame} operational",
-        "{AMAZON.VideoGame}"]
+        "is {AMAZON.VideoGame} operational"]
     },
  function(request, response) {
 
@@ -174,6 +173,7 @@ alexaApp.intent("GameStatus",
                         if(configInstance.debugEnabled=="true"){
                             console.log("Error checking game, response sent: " + response);
                         }
+                        Raven.captureException("Error checking status of game: " + gameAsked);
                         return response.send();
                     }
                 });
