@@ -12,6 +12,8 @@ var gameStatus = require('../../models/gamestatus');
 var config = require('../../config');
 let configInstance = new config();
 
+var realGameName = "age of conan";
+
 function CheckGameStatus(callback){
 
         request({uri: "http://msgs.ageofconan.com/patchnotes.php?UniverseName=AoCLiveUS&Language=en"}, function(error, response, body) {
@@ -28,7 +30,7 @@ function CheckGameStatus(callback){
                 var holdStatusStringUnparsed = point1.eq(1).text();
                 var holdMaintenanceStringUnparsed = point1.eq(4).text();
 
-                var statusResponse = new gameStatus(holdStatusStringUnparsed, holdMaintenanceStringUnparsed);
+                var statusResponse = new gameStatus(holdStatusStringUnparsed, holdMaintenanceStringUnparsed, realGameName);
 
                 if(configInstance.debugEnabled){
                      console.log("Hold Status: " + holdStatusStringUnparsed);

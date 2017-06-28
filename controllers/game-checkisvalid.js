@@ -9,17 +9,14 @@ var config = require('../config');
 let configInstance = new config();
 
 //game list objects
-var gamesSupported = { 
-    "secret world legends": "secret_world_legends",
-    "the secret world": "the_secret_world",
-    "age of conan": "age_of_conan_us"
-};
+//includes alternate spellings based on alexa interpretation of spoken words.
+var gamesSupported = require('../games/supportedgames').default;
 
 function CheckGameIsValid(gametocheck){
 
         if((gametocheck != null) || (gametocheck != 'undefined')){
             var testvalue = gamesSupported[gametocheck];
-            if(configInstance.debugEnabled){
+            if(configInstance.debugEnabled == "true"){
                 console.log("gametocheck: " + gametocheck);
                 console.log("testvalue: " + testvalue);
             }

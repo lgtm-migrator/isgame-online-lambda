@@ -13,14 +13,14 @@ function CheckGameStatus(gametocheck, callback){
     return q.Promise(function(resolve, reject, notify){
         if((gametocheck != null) || (gametocheck != 'undefined')){
 
-             if(configInstance.debugEnabled){
+             if(configInstance.debugEnabled == "true"){
                  console.log("game to check for status is: " + gametocheck);
                 }
 
             var gameVar = require(`../games/${gametocheck}`);
                 
             gameVar((response) => {
-                if(configInstance.debugEnabled){
+                if(configInstance.debugEnabled == "true"){
                     console.log("entered gametocheck");
                     console.log("status engine response: " + response.status);
                 }

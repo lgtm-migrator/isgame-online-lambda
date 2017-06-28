@@ -8,9 +8,10 @@
 'use strict'; 
 class GameStatus{
 
- constructor(inStatus, inMaintenance){
+ constructor(inStatus, inMaintenance, realName){
     this.status = inStatus;
     this.nextmaintenance = inMaintenance;
+    this.name = realName; //used for when alt mapping is not same. baseline and make them respond the same.
  }
 }
 

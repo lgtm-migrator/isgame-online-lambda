@@ -12,6 +12,8 @@ var gameStatus = require('../../models/gamestatus');
 var config = require('../../config');
 let configInstance = new config();
 
+var realGameName = "secret world legends";
+
 function CheckGameStatus(callback){
 
         request({uri: "http://msgs.ageofconan.com/patchnotes.php?UniverseName=SWLLive&Language=en"}, function(error, response, body) {
@@ -29,7 +31,7 @@ function CheckGameStatus(callback){
                 var holdStatusStringUnparsed = point1.children().eq(1).text();
                 var holdMaintenanceStringUnparsed = point2.children().eq(1).text();
 
-                var statusResponse = new gameStatus(holdStatusStringUnparsed, holdMaintenanceStringUnparsed);
+                var statusResponse = new gameStatus(holdStatusStringUnparsed, holdMaintenanceStringUnparsed, realGameName);
 
                 if(configInstance.debugEnabled){
                      console.log("Hold Status: " + holdStatusStringUnparsed);

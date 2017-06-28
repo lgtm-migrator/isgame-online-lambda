@@ -14,37 +14,66 @@ var gamestatusengine = require('./controllers/game-statusengine');
 var gamecheckisvalid = require('./controllers/game-checkisvalid');
 
 let configInstance = new config();
+Raven.config(configInstance.ravenDSN).install();
 
 // ALWAYS setup the alexa app and attach it to express before anything else.
 
 var alexaApp = new alexa.app("v1alexaapi");
-    // alexaApp.pre = function(request, response, type) {
-    //     if(request.applicationId != "amzn1.ask.skill.ffe13be5-1255-4bf7-a243-b89bf41f373b")
-    //     {
-    //         return response.fail("Invalid applicationId");
-    //     }
-    // }
+alexaApp.pre = function(request, response, type) {
+    var session = request.getSession();
 
-
-Raven.config(configInstance.ravenDSN).install();
+    if(configInstance.debugEnabled == "false")
+    {
+        //skip for debug
+    
+        if(request.applicationId != "amzn1.ask.skill.ffe13be5-1255-4bf7-a243-b89bf41f373b")
+        {
+            Raven.captureException(new Error("Invalid ApplicationID: " + request.applicationId + " Type: " + type + " Request: " + request + " Session ID: " + session.applicationId));
+            return response.fail("Invalid applicationId");
+        }
+    }
+    else if(configInstance.debugEnabled == "true"){
+        console.log("Session APPID: " + session.applicationId);
+        console.log("Request APPID: " + request.applicationId);
+        console.log("Debug Flag: " + configInstance.debugEnabled);
+        console.log(request);
+    }
+}
+alexaApp.error = function(exception, request, response) {
+    Raven.captureException(exception);
+    response.say("Sorry, an issue occurred.").shouldEndSession(true);
+};
 
 alexaApp.launch(function(request, response) {
 
-  response.say("Is Game Online opened.");
-  response.shouldEndSession (false, "What game would you like status for? To leave Is Game Online, say exit.");
-  response.send();
-
+  response.say("Is Game Online opened. You may ask for the status of a game by saying for example, is Secret World Legends up? Or, what is the status of The Secret World?").shouldEndSession(false);
+  if(configInstance.debugEnabled=="true"){
+        console.log("Entered launch.");
+    }
+  //return false;
 });
+
+// sessionEnded /////////////////////////////////////////////////////////////////
+alexaApp.sessionEnded(function(request, response) {
+  // cleanup the user's server-side session
+  // no response required
+  if(configInstance.debugEnabled=="true"){
+        console.log("Entered sessionEnded.");
+    }  
+});
+
 
 // AMAZON.HelpIntent /////////////////////////////////////////////////////////////////
 alexaApp.intent("AMAZON.HelpIntent",{
   "slots": {},
   "utterances": []
 }, function(request, response) {
-  	var helpoutput = "Is Game Online allows you to check status of some online video games. You may ask for example, is, game name here, up?";
-  	response.say(helpoutput);
-    response.shouldEndSession (false, "What game would you like status for? To leave Is Game Online, say exit.");
-  	return response.send();
+    if(configInstance.debugEnabled=="true"){
+        console.log("Entered HELP.");
+    }
+  	var helpoutput = "Is Game Online allows you to check status of some online video games. You may ask for example, is Secret World Legends up?";
+  	response.say(helpoutput).reprompt().shouldEndSession (false);
+  	//return false;
 });
 
 // AMAZON.StopIntent /////////////////////////////////////////////////////////////////
@@ -52,9 +81,9 @@ alexaApp.intent("AMAZON.StopIntent",{
   "slots": {},
   "utterances": []
 }, function(request, response) {
-  	var stopoutput = "Goodbye."
-  	response.say(stopoutput)
-  	return
+  	var stopoutput = "Goodbye.";
+  	response.say(stopoutput).shouldEndSession(true);
+  	return;
 });
 
 // AMAZON.CancelIntent /////////////////////////////////////////////////////////////////
@@ -62,18 +91,19 @@ alexaApp.intent("AMAZON.CancelIntent",{
   "slots": {},
   "utterances": []
 }, function(request, response) {
-  	var canceloutput = "Goodbye."
-  	response.say(canceloutput)
-  	return
+  	var canceloutput = "Goodbye.";
+  	response.say(canceloutput).shouldEndSession(true);
+  	return;
 });
 
 // GAME STATUS ///////////////////////////////////////////////////////////////////////
 alexaApp.intent("GameStatus",
-    {"dialog": {
-      type: "delegate"
-    },
+    {
+    //     "dialog": {
+    //     type: "delegate"
+    // },
     "slots":{
-          "GameStaus": "AMAZON.VideoGame"
+          "AMAZON.VideoGame": "AMAZON.VideoGame"
     },
     "utterances": ["is {AMAZON.VideoGame} up",
         "check on {AMAZON.VideoGame}",
@@ -86,62 +116,85 @@ alexaApp.intent("GameStatus",
         "if {AMAZON.VideoGame} is online",
         "if {AMAZON.VideoGame} is offline",
         "status of {AMAZON.VideoGame}",
-        "{AMAZON.VideoGame} state"]
+        "{AMAZON.VideoGame} state",
+        "is {AMAZON.VideoGame} available",
+        "is {AMAZON.VideoGame} operational",
+        "{AMAZON.VideoGame}"]
     },
-
  function(request, response) {
 
     try{
-        var gameAsked = request.slot("AMAZON.VideoGame");
-        var gameIsValid = gamecheckisvalid(gameAsked);
-        if(typeof gameAsked === "undefined"){
-            response.shouldEndSession (false, "What game would you like status for?");
-            return response.send();
-        }
-
-        if(gameIsValid != null){
-            
-            return gamestatusengine(gameIsValid).then(function (gamestatus) {
-                if(configInstance.debugEnabled){console.log(gamestatus);}
-                if(gamestatus.status != null){
-                    
-                    if(gamestatus.status == "Online")
-                    {
-                        var responseText = `Yes, ${gameAsked} is currently ${gamestatus.status}`;
-                        response.say(responseText);
-                    }
-                    else if(gamestatus.status == "Offline")
-                    {
-                        var responseText = `No, ${gameAsked} is currently ${gamestatus.status}`;
-                        response.say(responseText);
-                    }
-                    else{
-                        var responseText = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
-                        response.say(responseText);
-                    }
-                
-                    if(configInstance.debugEnabled){console.log(response);}
-                    return response.send();
-
-                }
-                else
-                {
-                    response.clear().say(`Sorry there was an error checking the status for ${gameAsked}`);
-                    return response.send();
-                }
-            });
+        var gameAsked = request.slot("AMAZON.VideoGame");       
+        if(typeof gameAsked === "undefined" || gameAsked === ""){
+            response.say("Tell me a supported game.").reprompt("What game would you like status for?").shouldEndSession(false).send();
+            //return false;
+            if(configInstance.debugEnabled=="true"){
+                console.log("Undefined game, response sent: " + response);
+            }
         }
         else{
-            response.clear().say(`Sorry, ${gameAsked} is not yet supported. The internets will work to make this so.`);
-            return response.send();
+            var gameIsValid = gamecheckisvalid(gameAsked);
+            gameAsked = gameAsked.toLowerCase();
+
+            if(gameIsValid != null){
+                
+                return gamestatusengine(gameIsValid).then(function (gamestatus) {
+                    if(configInstance.debugEnabled){console.log(gamestatus);}
+                    if(gamestatus.status != null){
+                        
+                        if(gamestatus.status == "Online")
+                        {
+                            var responseText = `Yes, ${gamestatus.name} is currently ${gamestatus.status}`;
+                            response.say(responseText);
+                        }
+                        else if(gamestatus.status == "Offline")
+                        {
+                            var responseText = `No, ${gamestatus.name} is currently ${gamestatus.status}`;
+                            response.say(responseText);
+                        }
+                        else{
+                            var responseText = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
+                            response.say(responseText);
+                        }
+                    
+                        if(configInstance.debugEnabled=="true"){
+                            console.log("Valid game loop, response sent: " + response);
+                        }
+                        
+                        response.shouldEndSession(true);
+                        return response.send();
+
+                    }
+                    else
+                    {
+                        
+                        response.clear().say(`Sorry there was an error checking the status for ${gameAsked}`);
+                        response.shouldEndSession(true);
+
+                        if(configInstance.debugEnabled=="true"){
+                            console.log("Error checking game, response sent: " + response);
+                        }
+                        return response.send();
+                    }
+                });
+            }
+            else{
+                response.clear().say(`Sorry, ${gameAsked} is not yet supported. The internets will work to make this so.`);
+                response.shouldEndSession(true);
+                if(configInstance.debugEnabled=="true"){
+                    console.log("Unsupported game, response sent: " + response);
+                }
+                Raven.captureException("Unsupported game: " + gameAsked);
+                return response.send();
+            }
         }
     }//try
     catch(e){
         Raven.captureException(e);
-        response.clear();
-        response.shouldEndSession(true, "Sorry, something went wrong, please try your request again.");
-        return response.send();
-
+        if(configInstance.debugEnabled=="true"){
+                console.log("Error: " + e);
+        }
+        response.clear().say("Sorry, something went wrong. Please try your request again.").shouldEndSession(false);
     }//catch
   }
 );

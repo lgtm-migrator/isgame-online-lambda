@@ -1,6 +1,9 @@
 #dist folder from babel compilation
 .dist
 
+#ignore publish script
+publish.sh
+
 #zip
 .zip
 
