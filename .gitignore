@@ -3,6 +3,7 @@
 
 #ignore publish script
 publish.sh
+publish.bat
 
 #zip
 .zip
