@@ -9,6 +9,7 @@ exports.default = {
     "secret world legends": "secret_world_legends",
     "secret world legend": "secret_world_legends",
     "sicut world legends": "secret_world_legends",
+    "secret word legends": "secret_world_legends",
     "the secret world": "the_secret_world",
     "age of conan": "age_of_conan_us",
     "age of conin": "age_of_conan_us",
