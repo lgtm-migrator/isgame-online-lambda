@@ -179,7 +179,7 @@ alexaApp.intent("GameStatus",
                 });
             }
             else{
-                response.clear().say(`Sorry, ${gameAsked} is not yet supported. The game you requested will be reviewed. Try again with a supported game.`);
+                response.clear().say(`Sorry, ${gameAsked} is not yet supported. We will try to add it in the future. Until then, try again with a supported game.`);
                 response.shouldEndSession(true);
                 if(configInstance.debugEnabled=="true"){
                     console.log("Unsupported game, response sent: " + response);
