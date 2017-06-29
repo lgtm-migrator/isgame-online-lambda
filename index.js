@@ -125,7 +125,7 @@ alexaApp.intent("GameStatus",
     try{
         var gameAsked = request.slot("AMAZON.VideoGame");       
         if(typeof gameAsked === "undefined" || gameAsked === ""){
-            response.say("Tell me a supported game.").reprompt("What game would you like status for?").shouldEndSession(false).send();
+            response.say("Tell me the name of a game you want status of.").reprompt("What game would you like status for?").shouldEndSession(false).send();
             //return false;
             if(configInstance.debugEnabled=="true"){
                 console.log("Undefined game, response sent: " + response);
@@ -135,25 +135,25 @@ alexaApp.intent("GameStatus",
             var gameIsValid = gamecheckisvalid(gameAsked);
             gameAsked = gameAsked.toLowerCase();
 
-            if(gameIsValid != null){
+            if(gameIsValid !== null){
                 
                 return gamestatusengine(gameIsValid).then(function (gamestatus) {
                     if(configInstance.debugEnabled){console.log(gamestatus);}
-                    if(gamestatus.status != null){
+                    if(gamestatus.status !== null){
                         
                         if(gamestatus.status == "Online")
                         {
-                            var responseText = `Yes, ${gamestatus.name} is currently ${gamestatus.status}`;
-                            response.say(responseText);
+                            var responseTextOnline = `Yes, ${gamestatus.name} is currently ${gamestatus.status}`;
+                            response.say(responseTextOnline);
                         }
                         else if(gamestatus.status == "Offline")
                         {
-                            var responseText = `No, ${gamestatus.name} is currently ${gamestatus.status}`;
-                            response.say(responseText);
+                            var responseTextOffline = `No, ${gamestatus.name} is currently ${gamestatus.status}`;
+                            response.say(responseTextOffline);
                         }
                         else{
-                            var responseText = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
-                            response.say(responseText);
+                            var responseTextUnknown = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
+                            response.say(responseTextUnknown);
                         }
                     
                         if(configInstance.debugEnabled=="true"){
