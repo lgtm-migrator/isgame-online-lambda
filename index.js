@@ -46,7 +46,7 @@ alexaApp.error = function(exception, request, response) {
 
 alexaApp.launch(function(request, response) {
 
-  response.say("Is Game Online opened. You may ask for the status of a game by saying, is Secret World Legends up? Or, what is the status of The Secret World? So, what may I do for you today?").shouldEndSession(false);
+  response.say("Is Game Online opened. You may ask for the status of a supported online game by saying, is Secret World Legends up? Or, what is the status of The Secret World? So, what may I do for you today?").shouldEndSession(false);
   if(configInstance.debugEnabled=="true"){
         console.log("Entered launch.");
     }
@@ -71,7 +71,7 @@ alexaApp.intent("AMAZON.HelpIntent",{
     if(configInstance.debugEnabled=="true"){
         console.log("Entered HELP.");
     }
-  	var helpoutput = "Is Game Online allows you to check status of some online video games. You may ask for the status of a game by saying, is Secret World Legends up? Or, what is the status of The Secret World? So, what may I do for you today?";
+  	var helpoutput = "Is Game Online allows you to check status of some online video games. You may ask for the status of a supported online game by saying, is Secret World Legends up? Or, what is the status of The Secret World? So, what may I do for you today?";
   	response.say(helpoutput).reprompt().shouldEndSession (false);
   	//return false;
 });
@@ -179,7 +179,7 @@ alexaApp.intent("GameStatus",
                 });
             }
             else{
-                response.clear().say(`Sorry, ${gameAsked} is not yet supported. The internets will work to make this so.`);
+                response.clear().say(`Sorry, ${gameAsked} is not yet supported. The game you requested will be reviewed. Try again with a supported game.`);
                 response.shouldEndSession(true);
                 if(configInstance.debugEnabled=="true"){
                     console.log("Unsupported game, response sent: " + response);
