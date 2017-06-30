@@ -132,9 +132,10 @@ alexaApp.intent("GameStatus",
             }
         }
         else{
-            var gameIsValid = gamecheckisvalid(gameAsked);
+            
             gameAsked = gameAsked.toLowerCase();
-
+            var gameIsValid = gamecheckisvalid(gameAsked);
+            
             if(gameIsValid !== null){
                 
                 return gamestatusengine(gameIsValid).then(function (gamestatus) {
