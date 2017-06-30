@@ -6,7 +6,7 @@ publish.sh
 publish.bat
 
 #zip
-.zip
+*.zip
 
 #ignore vscode
 .vscode
