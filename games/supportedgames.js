@@ -25,6 +25,11 @@ exports.default = {
     //xbox live - microsoft
     "xbox live": "xbox_live",
 
+    //playstation - sony
+    "playstation": "playstation",
+    "ps4": "playstation",
+    "ps3": "playstation",
+    
     //star trek online - perfect world
     "star trek online":"star_trek_online",
 
