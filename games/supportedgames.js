@@ -40,5 +40,9 @@ exports.default = {
     "final fantasy xiv online":"final_fantasy_xiv",
     "a realm reborn":"final_fantasy_xiv",
     "heavensward":"final_fantasy_xiv",
-    "stormblood":"final_fantasy_xiv"
+    "stormblood":"final_fantasy_xiv",
+    "realm reborn":"final_fantasy_xiv",
+    "heaven's ward":"final_fantasy_xiv",
+    "storm blood":"final_fantasy_xiv"
+
 }
