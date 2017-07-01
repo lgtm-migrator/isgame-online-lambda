@@ -32,6 +32,7 @@ exports.default = {
     "final fantasy 14":"final_fantasy_xiv",
     "final fantasy fourteen":"final_fantasy_xiv",
     "final fantasy xiv":"final_fantasy_xiv",
+    "final fantasy xiv online":"final_fantasy_xiv",
     "a realm reborn":"final_fantasy_xiv",
     "heavensward":"final_fantasy_xiv",
     "stormblood":"final_fantasy_xiv"
