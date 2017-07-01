@@ -26,5 +26,13 @@ exports.default = {
     "xbox live": "xbox_live",
 
     //star trek online - perfect world
-    "star trek online":"star_trek_online"
+    "star trek online":"star_trek_online",
+
+    //final fantasy online XIV - square enix
+    "final fantasy 14":"final_fantasy_xiv",
+    "final fantasy fourteen":"final_fantasy_xiv",
+    "final fantasy xiv":"final_fantasy_xiv",
+    "a realm reborn":"final_fantasy_xiv",
+    "heavensward":"final_fantasy_xiv",
+    "stormblood":"final_fantasy_xiv"
 }
