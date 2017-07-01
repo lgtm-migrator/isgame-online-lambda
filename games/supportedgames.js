@@ -22,5 +22,8 @@ exports.default = {
     "age of and": "age_of_conan_us",
 
     //xbox live - microsoft
-    "xbox live": "xbox_live"
+    "xbox live": "xbox_live",
+
+    //star trek online - perfect world
+    "star trek online":"star_trek_online"
 }
