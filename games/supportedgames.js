@@ -14,6 +14,7 @@ exports.default = {
 
     //the secret world - Funcom
     "the secret world": "the_secret_world",
+    "the secret word": "the_secret_world",
 
     //age of conan - funcom
     "age of conan": "age_of_conan_us",
@@ -27,5 +28,17 @@ exports.default = {
     //playstation - sony
     "playstation": "playstation",
     "ps4": "playstation",
-    "ps3": "playstation"
+    "ps3": "playstation",
+    
+    //star trek online - perfect world
+    "star trek online":"star_trek_online",
+
+    //final fantasy online XIV - square enix
+    "final fantasy 14":"final_fantasy_xiv",
+    "final fantasy fourteen":"final_fantasy_xiv",
+    "final fantasy xiv":"final_fantasy_xiv",
+    "final fantasy xiv online":"final_fantasy_xiv",
+    "a realm reborn":"final_fantasy_xiv",
+    "heavensward":"final_fantasy_xiv",
+    "stormblood":"final_fantasy_xiv"
 }
