@@ -14,6 +14,7 @@ exports.default = {
 
     //the secret world - Funcom
     "the secret world": "the_secret_world",
+    "the secret word": "the_secret_world",
 
     //age of conan - funcom
     "age of conan": "age_of_conan_us",
