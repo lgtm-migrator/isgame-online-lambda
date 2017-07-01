@@ -22,5 +22,10 @@ exports.default = {
     "age of and": "age_of_conan_us",
 
     //xbox live - microsoft
-    "xbox live": "xbox_live"
+    "xbox live": "xbox_live",
+
+    //playstation - sony
+    "playstation": "playstation",
+    "ps4": "playstation",
+    "ps3": "playstation"
 }

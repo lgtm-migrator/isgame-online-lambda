@@ -23,12 +23,16 @@ function CheckGameStatus(callback){
             
             try{
                 
-                var $ = cheerio.load(body);           
+                var point1 = JSON.parse(body);
 
-                var holdStatusStringUnparsed = point1.children().eq(0).text();
+                var holdStatusStringUnparsed = point1.status;
 
-                if(holdStatusStringUnparsed === "Up and Running"){
+                if(holdStatusStringUnparsed.length == 0 ){
                     holdStatusStringUnparsed = "Online"; //fixup to online for return matchin.
+                }
+                else
+                {
+                    holdStatusStringUnparsed = "ServiceNote";
                 }
                 var statusResponse = new gameStatus(holdStatusStringUnparsed, null, realGameName);
 
