@@ -44,6 +44,10 @@ exports.default = {
     "stormblood":"final_fantasy_xiv",
     "realm reborn":"final_fantasy_xiv",
     "heaven's ward":"final_fantasy_xiv",
-    "storm blood":"final_fantasy_xiv"
+    "storm blood":"final_fantasy_xiv",
+
+    //eve online - cpp
+    "eve online": "eve_online",
+    "eave online": "eve_online"
 
 }
