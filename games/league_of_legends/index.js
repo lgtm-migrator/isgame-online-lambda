@@ -30,14 +30,11 @@ function CheckGameStatus(callback){
                 
                 var holdStatusStringUnparsed = "Offline";
                 
-                //enter for
-                var keys = Object.keys(point1.services);
+                for(var slug in point1.services){
+                    
+                    if(point1.services[slug].slug == "game"){
 
-                for(var i =0, length = keys.length; i<length; i++){
-
-                    if(point1.services[keys[i]].slug == "game"){
-                
-                        if(point1.services[keys[i]].status=="online"){
+                        if(point1.services[slug].status == "online"){
                             holdStatusStringUnparsed="Online";
                         }
                         else{

@@ -51,6 +51,7 @@ exports.default = {
     "eave online": "eve_online",
 
     //league of legends - riot games
-    "league of legends": "league_of_legends"
+    "league of legends": "league_of_legends",
+    "league of legend": "league_of_legends"
 
 }
