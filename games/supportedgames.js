@@ -48,6 +48,10 @@ exports.default = {
 
     //eve online - cpp
     "eve online": "eve_online",
-    "eave online": "eve_online"
+    "eave online": "eve_online",
+
+    //league of legends - riot games
+    "league of legends": "league_of_legends",
+    "league of legend": "league_of_legends"
 
 }
