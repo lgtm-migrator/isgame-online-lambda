@@ -11,6 +11,7 @@ exports.default = {
     "secret world legend": "secret_world_legends",
     "sicut world legends": "secret_world_legends",
     "secret word legends": "secret_world_legends",
+    "the secret world legends": "secret_world_legends",
 
     //the secret world - Funcom
     "the secret world": "the_secret_world",
