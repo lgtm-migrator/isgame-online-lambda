@@ -53,6 +53,13 @@ exports.default = {
 
     //league of legends - riot games
     "league of legends": "league_of_legends",
-    "league of legend": "league_of_legends"
+    "league of legend": "league_of_legends",
+    "the league of legends": "league_of_legends",
+
+    //star citizen - robert space industries
+    //this is a nonreliable test. It checks port state of the universe server.
+    "star citizen": "star_citizen",
+    "the star citizen": "star_citizen",
+    "stir citizen": "star_citizen"
 
 }

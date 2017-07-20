@@ -1,9 +1,18 @@
+////////////////////////////////////////
+// isgame-online-lambda
+//
+// Copyright (c) 2017 Jonathan Hardison
+// /games/star_trek_online/index.js
+///////////////////////////////////////
+
 var request = require("request");
 var cheerio = require("cheerio");
-var net = require("net");
+var gameStatus = require('../../models/gamestatus');
 
-var realGameName = "secret world legends";
+var config = require('../../config');
+let configInstance = new config();
 
+var realGameName = "star citizen";
 
 function CheckGameStatus(callback){
 
@@ -45,40 +54,6 @@ function CheckGameStatus(callback){
         throw errorUnhandled;
     }
     
-
-
-        
-//ECONNREFUSED
-//ENOTFOUND 
-       
-        // request({uri: "http://msgs.ageofconan.com/patchnotes.php?UniverseName=SWLLive&Language=en"}, function(error, response, body) {
-        //     if(error){
-        //         callback(null);
-        //     }
-            
-        //     try{
-                
-        //         var $ = cheerio.load(body);
-
-        //         var point1 = $('font');
-        //         var point2 = $('b');
-
-        //         var holdStatusStringUnparsed = point1.children().eq(1).text();
-        //         var holdMaintenanceStringUnparsed = point2.children().eq(1).text();
-
-                
-
-
-        //              console.log("Hold Status: " + holdStatusStringUnparsed);
-        //              console.log("Maint Status: " + holdMaintenanceStringUnparsed);
-
-
-
-        //     }
-        //     catch(errorUnhandled){
-        //         throw errorUnhandled;
-        //     }
-        // });        
 }
 
-CheckGameStatus();
+module.exports = CheckGameStatus;
