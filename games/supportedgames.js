@@ -60,6 +60,7 @@ exports.default = {
     //this is a nonreliable test. It checks port state of the universe server.
     "star citizen": "star_citizen",
     "the star citizen": "star_citizen",
-    "stir citizen": "star_citizen"
+    "stir citizen": "star_citizen",
+    "star simpson": "star_citizen"
 
 }
