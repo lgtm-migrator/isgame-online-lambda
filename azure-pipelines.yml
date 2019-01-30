@@ -7,7 +7,6 @@ jobs:
   - job: BuildStage
     pool:
       name: 'OnPremises'
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master')) #not master
     steps:
     - task: NodeTool@0
       inputs:
