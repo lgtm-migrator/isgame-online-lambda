@@ -118,7 +118,8 @@ alexaApp.intent("GameStatus",
         "status of {AMAZON.VideoGame}",
         "{AMAZON.VideoGame} state",
         "is {AMAZON.VideoGame} available",
-        "is {AMAZON.VideoGame} operational"]
+        "is {AMAZON.VideoGame} operational",
+        "about {AMAZON.VideoGame}"]
     },
  function(request, response) {
 
