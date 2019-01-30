@@ -2,7 +2,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 var net = require("net");
 
-var realGameName = "secret world legends";
+var realGameName = "testing";
 
 
 function CheckGameStatus(callback){
@@ -11,32 +11,42 @@ function CheckGameStatus(callback){
     var holdStatusStringUnparsed = "Offline";
     var statusResponse;
     try{
-        const client = net.createConnection({port: 8000, host: "public.universe.robertsspaceindustries.com"}, () => {
-            //'connect' listener
-            //console.log('connected to server!');
-            client.write('isgame.online test poll');
-            holdStatusStringUnparsed = "Online";
-            statusResponse = new gameStatus(holdStatusStringUnparsed, null, realGameName);
-            callback(statusResponse);
-        });
+        request({uri: "https://ft308v428dv3.statuspage.io/api/v2/summary.json"}, function(error, response, body) {
+            if(error){
+                callback(null);
+            }
+            
+            try{
+                
+                var point1 = JSON.parse(body);
+                
+                var holdStatusStringUnparsed = "Offline";
+                
+                for(var name in point1.components){
+                    
+                    if(point1.components[name].name == "Fortnite"){
 
-        client.on('error',function(err){
-            if(err.code=="ECONNREFUSED"){
-                //console.log("econnrefused");
-                holdStatusStringUnparsed = "Offline";
+                        if(point1.components[name].status == "operational"){
+                            holdStatusStringUnparsed="Online";
+                        }
+                        else{
+                            holdStatusStringUnparsed="Offline"
+                        }
+                    }
+                }
+                var statusResponse = new gameStatus(holdStatusStringUnparsed, null, realGameName);
+
+                if(configInstance.debugEnabled){
+                     console.log("Hold Status: " + holdStatusStringUnparsed);
+                     console.log("Response Object" + statusResponse);
+                }
+
+                callback(statusResponse);
             }
-            else if(err.code=="ENOTFOUND"){
-                //console.log("enotfound");
-                holdStatusStringUnparsed = "Offline";
+            catch(errorUnhandled){
+                throw errorUnhandled;
             }
-            else{
-                console.log("all other failures");
-                holdStatusStringUnparsed = "Offline";
-            }
-            statusResponse = new gameStatus(holdStatusStringUnparsed, null, realGameName);
-            client.end();
-            callback(statusResponse);
-        });
+        });        
 
         
         
