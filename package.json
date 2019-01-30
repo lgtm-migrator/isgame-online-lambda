@@ -9,11 +9,11 @@
   "author": "Jonathan Hardison <jmh@jonathanhardison.com>",
   "license": "MIT",
   "dependencies": {
-    "alexa-app": "^4.2.0",
+    "alexa-app": "^4.2.3",
     "cheerio": "^1.0.0-rc.2",
     "net": "^1.0.2",
     "q": "^1.5.1",
-    "raven": "^2.3.0",
-    "request": "^2.83.0"
+    "raven": "^2.6.4",
+    "request": "^2.88.0"
   }
 }

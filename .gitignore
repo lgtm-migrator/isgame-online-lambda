@@ -12,9 +12,6 @@ index.zip
 #ignore vscode
 .vscode
 
-#ignore package-lock.json
-package-lock.json
-
 # Logs
 logs
 *.log
