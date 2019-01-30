@@ -34,6 +34,9 @@ function CheckGameStatus(callback){
                             if(point1.components[name].status == "operational"){
                                 holdStatusStringUnparsed="Online";
                             }
+                            else if(point1.components[name].status == "degraded_performance"){
+                                holdStatusStringUnparsed="Partial";
+                            }
                             else{
                                 holdStatusStringUnparsed="Offline"
                             }
