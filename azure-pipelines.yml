@@ -2,6 +2,10 @@
 trigger:
 - master
 
+resources:
+  - repo: self
+    fetchDepth: 1
+
 #jobs to do dev or prod builds
 jobs:
   - job: BuildStage
