@@ -37,6 +37,10 @@ jobs:
     dependsOn: BuildStage
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #master
     steps:
+    - task: DownloadPipelineArtifact@0
+      inputs:
+        artifactName: 'zipfile'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
     - task: LambdaDeployFunction@1
       displayName: 'Deploy Lambda Function: isGameOnline'
       inputs:
