@@ -57,6 +57,11 @@ exports.default = {
     "league of legend": "league_of_legends",
     "the league of legends": "league_of_legends",
 
+    //fortnite - epic games
+    "fortnite": "fortnite",
+    "four tonight": "fortnite",
+    "fortnight": "fortnite",
+
     //star citizen - robert space industries
     //this is a nonreliable test. It checks port state of the universe server.
     "star citizen": "star_citizen",
