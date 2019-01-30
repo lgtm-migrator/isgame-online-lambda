@@ -2,12 +2,15 @@
 trigger:
 - master
 
+resources:
+  - repo: self
+    fetchDepth: 1
+
 #jobs to do dev or prod builds
 jobs:
-  - job: Development
+  - job: BuildStage
     pool:
       name: 'OnPremises'
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master')) #not master
     steps:
     - task: NodeTool@0
       inputs:
@@ -15,26 +18,26 @@ jobs:
       displayName: 'Install Node.js'
     - script: |
         npm install
-        npm run build
-      displayName: 'npm install and build'
-  - job: Release
+      displayName: 'npm install'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.Repository.LocalPath)' 
+        includeRootFolder: true
+        archiveType: 'zip' # Options: zip, 7z, tar, wim
+        #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+        replaceExistingArchive: true
+  - job: ReleaseStage
     pool:
       name: 'OnPremises'
+    dependsOn: BuildStage
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #master
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '8.x'
-      displayName: 'Install Node.js'
-    - script: |
-        npm install
-        npm run build
-      displayName: 'npm install and build'
     - task: LambdaDeployFunction@1
       displayName: 'Deploy Lambda Function: isGameOnline'
       inputs:
         awsCredentials: 'AWS-JMH'
         regionName: 'us-east-1'
         functionName: isGameOnline
-        localZipFile: '**/BUILD*.zip'
+        localZipFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
 
