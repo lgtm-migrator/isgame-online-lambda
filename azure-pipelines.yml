@@ -27,12 +27,19 @@ jobs:
         #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
         replaceExistingArchive: true
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: 'zipfile'
+        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
   - job: ReleaseStage
     pool:
       name: 'OnPremises'
     dependsOn: BuildStage
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #master
     steps:
+    - task: DownloadPipelineArtifact@0
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
     - task: LambdaDeployFunction@1
       displayName: 'Deploy Lambda Function: isGameOnline'
       inputs:
