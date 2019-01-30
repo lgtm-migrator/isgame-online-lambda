@@ -1,0 +1,40 @@
+# Azure Pipelines -- JMHARDISON org.
+trigger:
+- master
+
+#jobs to do dev or prod builds
+jobs:
+  - job: Development
+    pool:
+      name: 'OnPremises'
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master')) #not master
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '8.x'
+      displayName: 'Install Node.js'
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+  - job: Release
+    pool:
+      name: 'OnPremises'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #master
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '8.x'
+      displayName: 'Install Node.js'
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+    - task: LambdaDeployFunction@1
+      displayName: 'Deploy Lambda Function: isGameOnline'
+      inputs:
+        awsCredentials: 'AWS-JMH'
+        regionName: 'us-east-1'
+        functionName: isGameOnline
+        localZipFile: '**/BUILD*.zip'
+
