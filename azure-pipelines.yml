@@ -25,12 +25,12 @@ jobs:
         includeRootFolder: true
         archiveType: 'zip' # Options: zip, 7z, tar, wim
         #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+        archiveFile: '$(Build.ArtifactStagingDirectory)/zips/$(Build.BuildId).zip' 
         replaceExistingArchive: true
     - task: PublishPipelineArtifact@0
       inputs:
         artifactName: 'zipfile'
-        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        targetPath: '$(Build.ArtifactStagingDirectory)/zips'
   - job: ReleaseStage
     pool:
       name: 'OnPremises'
@@ -39,12 +39,12 @@ jobs:
     steps:
     - task: DownloadPipelineArtifact@0
       inputs:
-        targetPath: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        targetPath: $(Build.ArtifactStagingDirectory)/zips
     - task: LambdaDeployFunction@1
       displayName: 'Deploy Lambda Function: isGameOnline'
       inputs:
         awsCredentials: 'AWS-JMH'
         regionName: 'us-east-1'
         functionName: isGameOnline
-        localZipFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        localZipFile: '$(Build.ArtifactStagingDirectory)/zips/$(Build.BuildId).zip'
 
