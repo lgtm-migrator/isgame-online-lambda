@@ -156,6 +156,7 @@ alexaApp.intent("GameStatus",
                         else if(gamestatus.status == "Partial")
                         {
                             var responseTextPartial = `Some ${gamestatus.name} services are unavailable, but not all.`;
+                            response.say(responseTextPartial);
                         }
                         else{
                             var responseTextUnknown = `I'm not sure, but chances are ${gameAsked} is currently unavailable.`;
