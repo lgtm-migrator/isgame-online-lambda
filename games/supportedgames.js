@@ -27,6 +27,8 @@ exports.default = {
     "xbox live": "xbox_live",
     "xbox":"xbox_live",
     "xbox live in":"xbox_live",
+    "the xbox servers":"xbox_live",
+    "xbox servers":"xbox_live",
 
     //playstation - sony
     "playstation": "playstation",
