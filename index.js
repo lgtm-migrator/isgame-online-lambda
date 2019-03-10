@@ -135,6 +135,13 @@ alexaApp.intent("GameStatus",
         else{
             
             gameAsked = gameAsked.toLowerCase();
+
+            if(gameAsked == "stop listening"){
+                var canceloutput = "Goodbye.";
+                response.say(canceloutput).shouldEndSession(true);
+                return;
+            }
+
             var gameIsValid = gamecheckisvalid(gameAsked);
             
             if(gameIsValid !== null){
