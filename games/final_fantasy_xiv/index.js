@@ -33,7 +33,7 @@ function CheckGameStatus(callback){
                     holdStatusStringUnparsed="Online";
                 }
                 else{
-                    holdStatusStringUnparsed="Offline"
+                    holdStatusStringUnparsed="Offline";
                 }
 
                 var statusResponse = new gameStatus(holdStatusStringUnparsed, null, realGameName);
