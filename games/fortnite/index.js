@@ -37,7 +37,7 @@ function CheckGameStatus(callback){
                                 holdStatusStringUnparsed="Partial";
                             }
                             else{
-                                holdStatusStringUnparsed="Offline"
+                                holdStatusStringUnparsed="Offline";
                             }
                         }
                     }
