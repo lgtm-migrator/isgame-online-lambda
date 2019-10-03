@@ -6,7 +6,6 @@
 ///////////////////////////////////////
 
 var request = require("request");
-var cheerio = require("cheerio");
 var gameStatus = require('../../models/gamestatus');
 
 var config = require('../../config');
