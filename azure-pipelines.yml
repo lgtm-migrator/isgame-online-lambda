@@ -9,8 +9,8 @@ resources:
 #jobs to do dev or prod builds
 jobs:
   - job: BuildStage
-    pool:
-      name: 'Azure Pipelines'
+    #pool:
+     # name: 'Azure Pipelines'
     steps:
     - task: NodeTool@0
       inputs:
@@ -32,8 +32,8 @@ jobs:
         artifactName: 'zipfile'
         targetPath: '$(Build.ArtifactStagingDirectory)'
   - job: ReleaseStage
-    pool:
-      name: 'Azure Pipelines'
+    #pool:
+     # name: 'Azure Pipelines'
     dependsOn: BuildStage
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #master
     steps:
